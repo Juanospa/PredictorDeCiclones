@@ -1,0 +1,37 @@
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score
+import pandas as pd
+import pickle
+
+# Cargar el archivo Excel (asegúrate de que el nombre y la extensión sean correctos)
+df = pd.read_excel('datos_ciclones.xlsx')
+
+# Asignar las variables de entrada (X) y la etiqueta (y)
+X = df[['temperatura', 'humedad']]  # Variables de entrada: temperatura y humedad
+y = df['ciclon']  # Etiqueta: si hay ciclón o no
+
+# Mostrar las primeras filas para verificar que los datos se han cargado correctamente
+print(df.head())
+
+# Dividir en datos de entrenamiento y prueba
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Modelo simple (puedes elegir LogisticRegression o DecisionTreeClassifier)
+model = LogisticRegression()  # O DecisionTreeClassifier()
+model.fit(X_train, y_train)
+
+# Predicción
+y_pred = model.predict(X_test)
+
+# Evaluación
+accuracy = accuracy_score(y_test, y_pred)
+print(f'Precisión del modelo: {accuracy * 100:.2f}%')
+
+# Guardar el modelo entrenado en un archivo usando pickle
+with open('modelo_ciclones.pkl', 'wb') as f:
+    pickle.dump(model, f)
+
+print("Modelo entrenado y guardado exitosamente.")
+

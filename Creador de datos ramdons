@@ -1,0 +1,30 @@
+import numpy as np
+import pandas as pd
+
+# Creando semilla para generar datos
+np.random.seed(42)
+
+# Número de datos a generar
+n_samples = 1000000
+
+# Generar datos aleatorios para temperatura y humedad
+temperaturas = np.random.uniform(low=26.5, high=40, size=n_samples)  # Temperatura entre 20 y 40 grados
+humedades = np.random.uniform(low=60, high=100, size=n_samples)  # Humedad entre 60% y 100%
+
+# Definir una regla simple para determinar si hay ciclón
+# Ejemplo: Si la temperatura es mayor a 20 y la humedad es mayor a 69, considerar como ciclón
+ciclon = np.where((temperaturas > 20) & (humedades > 60), 1, 0)
+
+# Crear un DataFrame con los datos
+df = pd.DataFrame({
+    'temperatura': temperaturas,
+    'humedad': humedades,
+    'ciclon': ciclon
+})
+
+# Mostrar las primeras filas del DataFrame
+print(df.head())
+
+# Guardar los datos en un archivo Excel
+df.to_excel('datos_ciclones.xlsx', index=False, engine='openpyxl')
+
